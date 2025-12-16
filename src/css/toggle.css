@@ -89,7 +89,9 @@ body.dark-mode #features {
   color: #e2d9f3;
 }
 
-body.dark-mode .features__item {
+body.dark-mode .features__item,
+body.dark-mode .login-div,
+body.dark-mode .signup-div {
   background: linear-gradient(135deg, #1f1529, #2b1f39, #120a1a);
   background: #24172f;
   border: 1px solid #3a2d47;

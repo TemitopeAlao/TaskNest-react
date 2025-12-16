@@ -19,7 +19,6 @@ function Landing() {
       <Features />
       <PricingPlan />
       <HowItWorks />
-
       <Footer />
     </>
   );

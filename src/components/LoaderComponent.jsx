@@ -1,4 +1,5 @@
-import "../css/toast.css";
+import "../css/loader.css";
+
 function LoaderComponent() {
   return (
     <div
@@ -6,10 +7,17 @@ function LoaderComponent() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100%",
+        height: "100vh",
       }}
     >
-      <span className="spinner"></span>
+      <div className="loader">
+        <div className="loader__bar"></div>
+        <div className="loader__bar"></div>
+        <div className="loader__bar"></div>
+        <div className="loader__bar"></div>
+        <div className="loader__bar"></div>
+        <div className="loader__ball"></div>
+      </div>
     </div>
   );
 }

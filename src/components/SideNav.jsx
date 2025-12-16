@@ -1,48 +1,101 @@
+import { NavLink, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getUserRecord } from "../utils/auth";
+import "../css/nav.css";
+import "../css/dashboard.css";
+
 function SideNav() {
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    async function fetchUser() {
+      const storedUser = localStorage.getItem("userData");
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      } else {
+        const userData = await getUserRecord();
+        if (userData) setUser(userData);
+      }
+    }
+    fetchUser();
+  }, []);
+
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    localStorage.removeItem("userToken");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userData");
+    navigate("/login");
+  }
+
   return (
-    <nav class="side__nav">
-      <div class="side__nav-profile">
-        <div class="side__nav-img">
+    <nav className="side__nav">
+      <div className="side__nav-profile">
+        <div className="side__nav-img">
           <img
             src="https://avatar.iran.liara.run/public"
-            alt="avatar image"
-            class="avatar-img"
-            id="avatar"
+            alt="avatar"
+            className="avatar-img"
           />
         </div>
 
-        <label class="upload-btn" for="file">
+        <label className="upload-btn" htmlFor="file">
           ⬆ Upload Image
         </label>
         <input id="file" type="file" accept="image/*" hidden />
 
-        <div class="profile-info">
-          <p class="user_name"></p>
-          <p class="user_email"></p>
+        <div className="profile-info">
+          <p className="user_name">{user ? user.name : "Loading..."}</p>
+
+          <p className="user_email">{user ? user.email : ""}</p>
         </div>
       </div>
-      <div class="nav-list-box">
-        <ul class="side__nav-lists">
-          <li id="dashboard-link" class="clicked-nav">
-            <ion-icon name="pie-chart"></ion-icon>
-            <span>Dashboard</span>
-          </li>
-          <li id="tasks-link">
-            <ion-icon name="wallet-outline"></ion-icon>
-            <span>My Task</span>
-          </li>
-          <li class="vital-nav">
-            <ion-icon name="alert"></ion-icon>
-            <span>Vital Tasks</span>
+
+      <div className="nav-list-box">
+        <ul className="side__nav-lists">
+          <li>
+            <NavLink
+              to="/dashboard/dashboard"
+              className={({ isActive }) => (isActive ? "clicked-nav" : "")}
+            >
+              <ion-icon name="pie-chart" />
+              <span>Dashboard</span>
+            </NavLink>
           </li>
 
-          <li id="account-link">
-            <ion-icon name="list-outline"></ion-icon>
-            <span>Account Information</span>
+          <li>
+            <NavLink
+              to="/dashboard/tasks"
+              className={({ isActive }) => (isActive ? "clicked-nav" : "")}
+            >
+              <ion-icon name="wallet-outline" />
+              <span>My Task</span>
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink
+              to="/dashboard/vitalTask"
+              className={({ isActive }) => (isActive ? "clicked-nav" : "")}
+            >
+              <ion-icon name="alert" />
+              <span>Vital Tasks</span>
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink
+              to="/dashboard/accountInfo"
+              className={({ isActive }) => (isActive ? "clicked-nav" : "")}
+            >
+              <ion-icon name="list-outline" />
+              <span>Account Information</span>
+            </NavLink>
           </li>
         </ul>
-        <div class="logout">
-          <ion-icon name="log-out-outline"></ion-icon>
+
+        <div className="logout" onClick={handleLogout}>
+          <ion-icon name="log-out-outline" />
           <span>Logout</span>
         </div>
       </div>

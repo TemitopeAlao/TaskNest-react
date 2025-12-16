@@ -1,4 +1,5 @@
-body {
+.signup-div,
+.login-div {
   display: flex;
   justify-content: center;
   align-items: center;

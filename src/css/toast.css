@@ -84,3 +84,11 @@
     max-width: 100vw !important;
   }
 }
+
+.toast.success {
+  background-color: #2ecc71;
+}
+
+.toast.error {
+  background-color: #e74c3c;
+}

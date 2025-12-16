@@ -1,89 +1,152 @@
-import React from "react";
+import "../css/global.css";
+import "../css/nav.css";
+import "../css/login.css";
+import "../css/toggle.css";
+import "../css/toast.css";
+
+import { useState } from "react";
+import { authSignup } from "../utils/auth";
+import LoginHeader from "../components/LoginHeader";
+import Toast from "../components/Toast";
 
 function Signup() {
-  return (
-    <>
-      <div className="signup-container">
-        <h2>Create Your Account</h2>
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("success");
 
-        <form id="signup-form" noValidate>
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setToastMessage("");
+
+    const passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{5,}$/;
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!name || !email || !password || !confirmPassword) {
+      setError("All fields are required.");
+      return;
+    }
+
+    if (!emailPattern.test(email)) {
+      setError("Enter a valid email.");
+      return;
+    }
+
+    if (!passwordPattern.test(password)) {
+      setError(
+        "Password must include uppercase, number, special character and be 5+ characters."
+      );
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    setLoading(true);
+
+    const result = await authSignup({ name, email, password });
+
+    setLoading(false);
+
+    if (!result.success) {
+      setError(result.error);
+      return;
+    }
+
+    setToastType("success");
+    setToastMessage("Account created successfully! Redirecting to login...");
+
+    setTimeout(() => {
+      window.location.href = "/login";
+    }, 1500);
+  };
+
+  return (
+    <main className="signup-div">
+      <LoginHeader />
+      <div className="signup-container">
+        <h2>Create an Account</h2>
+        <form onSubmit={handleSubmit} noValidate>
           <div className="input-group">
-            <label htmlFor="name">Full Name</label>
+            <label>Full Name</label>
             <div className="input-wrapper">
-              <ion-icon name="person-outline" />
+              <ion-icon name="person-outline"></ion-icon>
               <input
                 type="text"
-                id="name"
                 className="signup-name"
                 placeholder="Enter your full name"
-                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
-            <div className="error-message" id="name-error"></div>
           </div>
 
           <div className="input-group">
-            <label htmlFor="email">Email</label>
+            <label>Email</label>
             <div className="input-wrapper">
-              <ion-icon name="mail-outline" />
+              <ion-icon name="mail-outline"></ion-icon>
               <input
                 type="email"
-                id="email"
                 className="signup-email"
                 placeholder="Enter your email"
-                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div className="error-message" id="email-error"></div>
           </div>
 
           <div className="input-group">
-            <label htmlFor="password">Password</label>
+            <label>Password</label>
             <div className="input-wrapper">
-              <ion-icon name="lock-closed-outline" />
+              <ion-icon name="lock-closed-outline"></ion-icon>
               <input
                 type="password"
-                id="password"
                 className="signup-password"
                 placeholder="Enter your password"
-                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <div className="error-message" id="password-error"></div>
           </div>
 
           <div className="input-group">
-            <label htmlFor="confirm-password">Confirm Password</label>
+            <label>Confirm Password</label>
             <div className="input-wrapper">
-              <ion-icon name="lock-closed-outline" />
+              <ion-icon name="lock-closed-outline"></ion-icon>
               <input
                 type="password"
-                id="confirm-password"
                 placeholder="Re-enter your password"
-                required
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </div>
-            <div className="error-message" id="confirm-password-error"></div>
           </div>
 
-          <button type="submit" className="btn-login">
-            Sign Up
+          {error && <p className="error-message">{error}</p>}
+
+          <button type="submit" className="btn-login" disabled={loading}>
+            {loading ? "Signing up..." : "Sign Up"}
           </button>
         </form>
 
         <p className="auth-switch">
-          Already have an account?
-          <a href="login.html">Login</a>
+          Already have an account? <a href="/login">Login</a>
         </p>
       </div>
 
-      <div id="successModal" className="success-modal">
-        <div className="modal-box">
-          <ion-icon name="checkmark-circle" />
-          <p id="modalMessage"></p>
-        </div>
-      </div>
-    </>
+      <Toast
+        message={toastMessage}
+        type={toastType}
+        onClose={() => setToastMessage("")}
+      />
+    </main>
   );
 }
 
