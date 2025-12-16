@@ -1,0 +1,38 @@
+#account-container,
+.another-box {
+  border: 1px solid #555;
+  padding: 4rem;
+  margin-bottom: 2rem;
+  margin-right: 4rem;
+  border-radius: 8px;
+}
+.another-box input {
+  width: 100%;
+  margin-bottom: 1.5rem;
+  margin-top: 0.8rem;
+  padding: 0.6rem;
+  border-radius: 5px;
+}
+
+.another-box label {
+  margin-top: 1rem;
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+.account__actionBtn {
+  display: flex;
+  gap: 2rem;
+  padding-top: 2rem;
+}
+.account__actionBtn button {
+  background-color: #5200a3;
+  color: #fff;
+  padding: 1rem 4rem;
+  width: 30%;
+  border: none;
+}
+
+.account__actionBtn button:hover {
+  background-color: white;
+  color: blueviolet;
+}
