@@ -1,15 +1,3 @@
-function showModal(message) {
-  const modal = document.getElementById("successModal");
-  const modalMsg = document.getElementById("modalMessage");
-
-  modalMsg.textContent = message;
-  modal.style.display = "flex";
-
-  setTimeout(() => {
-    modal.style.display = "none";
-  }, 1500);
-}
-
 export const authSignup = async ({ name, email, password }) => {
   try {
     const res = await fetch(
@@ -58,6 +46,8 @@ export const authLogin = async ({ email, password }) => {
         error: "Incorrect email or password",
       };
     }
+
+    localStorage.removeItem("userData");
 
     localStorage.setItem("userToken", data.authToken);
     localStorage.setItem("userId", data.user_id);

@@ -6,20 +6,20 @@ import "../css/dashboard.css";
 
 function SideNav() {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
   useEffect(() => {
     async function fetchUser() {
-      const storedUser = localStorage.getItem("userData");
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
-      } else {
-        const userData = await getUserRecord();
-        if (userData) setUser(userData);
+      const userData = await getUserRecord();
+      if (!userData) {
+        navigate("/login");
+        return;
       }
+      setUser(userData);
     }
-    fetchUser();
-  }, []);
 
-  const navigate = useNavigate();
+    fetchUser();
+  }, [navigate]);
 
   function handleLogout() {
     localStorage.removeItem("userToken");
@@ -45,9 +45,8 @@ function SideNav() {
         <input id="file" type="file" accept="image/*" hidden />
 
         <div className="profile-info">
-          <p className="user_name">{user ? user.name : "Loading..."}</p>
-
-          <p className="user_email">{user ? user.email : ""}</p>
+          <p className="user_name">{user?.name || "Loading..."}</p>
+          <p className="user_email">{user?.email || ""}</p>
         </div>
       </div>
 
@@ -55,7 +54,8 @@ function SideNav() {
         <ul className="side__nav-lists">
           <li>
             <NavLink
-              to="/dashboard/dashboard"
+              to=""
+              end
               className={({ isActive }) => (isActive ? "clicked-nav" : "")}
             >
               <ion-icon name="pie-chart" />
@@ -65,7 +65,7 @@ function SideNav() {
 
           <li>
             <NavLink
-              to="/dashboard/tasks"
+              to="tasks"
               className={({ isActive }) => (isActive ? "clicked-nav" : "")}
             >
               <ion-icon name="wallet-outline" />
@@ -75,7 +75,7 @@ function SideNav() {
 
           <li>
             <NavLink
-              to="/dashboard/vitalTask"
+              to="vitaltask"
               className={({ isActive }) => (isActive ? "clicked-nav" : "")}
             >
               <ion-icon name="alert" />
@@ -85,7 +85,7 @@ function SideNav() {
 
           <li>
             <NavLink
-              to="/dashboard/accountInfo"
+              to="accountinfo"
               className={({ isActive }) => (isActive ? "clicked-nav" : "")}
             >
               <ion-icon name="list-outline" />

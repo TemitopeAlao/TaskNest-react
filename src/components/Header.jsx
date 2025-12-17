@@ -95,7 +95,9 @@ function Header() {
         </ul>
 
         <div className="nav__actions">
-          <Link to="/login">Login</Link>
+          <Link to="/login" className="login">
+            Login
+          </Link>
           <Link to="/signup" className="signup">
             Sign Up
           </Link>

@@ -30,8 +30,8 @@ function AppLayout() {
           <Routes>
             <Route index element={<Dashboard />} />
             <Route path="tasks" element={<MyTask />} />
-            <Route path="vitalTask" element={<VitalTask />} />
-            <Route path="accountInfo" element={<AccountInfo />} />
+            <Route path="vitaltask" element={<VitalTask />} />
+            <Route path="accountinfo" element={<AccountInfo />} />
           </Routes>
         </Suspense>
       </main>
